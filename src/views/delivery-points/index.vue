@@ -1,5 +1,5 @@
 <template lang="pug">
-block content 
+.delivery-point-list 
   h1 point list page
 </template>
 
