@@ -1,17 +1,30 @@
-<template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+<template lang="pug">
+Desktop
 </template>
 
+<script lang="ts">
+import { defineComponent } from "vue";
+import Desktop from "@/components/layouts/Desktop.vue";
+
+export default defineComponent({
+  name: "App",
+  components: {
+    Desktop,
+  },
+});
+</script>
+
 <style lang="stylus">
+body
+  margin 0
+ul
+  margin 0
+  padding 0
+  list-style-type none
+a, a:visited, a:hover, a:active {
+  color: inherit;
+  text-decoration none
+}
 #app
-  font-family Avenir, Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
-  margin-top 60px
+  font-family Inter, Helvetica, Arial, sans-serif
 </style>

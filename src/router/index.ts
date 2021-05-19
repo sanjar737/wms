@@ -1,14 +1,13 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import DeliveryPoints from "@/views/delivery-points/index.vue";
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Delivery-Point-list",
-    component: DeliveryPoints,
+    component: () => import("@/views/delivery-points/index.vue"),
   },
   {
-    path: "/about",
+    path: "/:id",
     name: "Delivery-Point",
     component: () => import("@/views/delivery-points/id.vue"),
   },
