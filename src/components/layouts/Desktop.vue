@@ -25,6 +25,8 @@ export default defineComponent({
     margin-bottom 20px
   .container
     $content-width = 870px
-    padding-left "calc((100% - %s) / 2)" % $content-width
-    padding-right "calc((100% - %s) / 2)" % $content-width
+    $min-padding = 25px
+    margin: 0 $min-padding
+    padding-left "calc((100% - %s - %s) / 2)" % ($content-width $min-padding)
+    padding-right "calc((100% - %s - %s) / 2)" % ($content-width $min-padding)
 </style>
