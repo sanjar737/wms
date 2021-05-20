@@ -1,6 +1,6 @@
 <template lang="pug">
 AppLayout(:breadcrumbs="breadcrumbs")
-  .delivery-point-list 
+  .delivery-points 
     DeliveryPointList(:deliveryPoints="deliveryPoints")
 </template>
 
@@ -28,3 +28,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="stylus">
+.delivery-points
+  background: #fff;
+  padding: 32px 10px 32px 20px;
+</style>

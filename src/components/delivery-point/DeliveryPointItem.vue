@@ -22,13 +22,17 @@ export default defineComponent({
 
 <style scoped lang="stylus">
 .delivery-point-item
-  font-size: 12px
-  opacity: 0.8
-  color: #303236
-  display: flex
-  border: 1px solid #D8D8D8
-  border-radius: 4px
+  font-size 12px
+  opacity 0.8
+  color #303236
+  display flex
+  border 1px solid #D8D8D8
+  border-radius 4px
   padding 24px 21px
+  transition background 0.1s ease-in-out
+  &:hover{
+    background #f0f1f3
+  }
   .id
     margin-right 14px
     white-space nowrap
