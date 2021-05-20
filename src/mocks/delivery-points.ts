@@ -1,10 +1,12 @@
+import { DeliveryPoint } from "@/types/api/delivery-point";
+
 export default [
   {
-    name: "НЧЛ-ВХТ",
+    shortName: "НЧЛ-ВХТ",
     id: 1,
   },
   {
-    name: "ЕКБ-1",
+    shortName: "ЕКБ-1",
     id: 2,
   },
-];
+] as DeliveryPoint[];

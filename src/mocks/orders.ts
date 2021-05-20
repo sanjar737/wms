@@ -1,3 +1,5 @@
+import { Order } from "@/types/api/order";
+
 export default [
   {
     orderId: 1,
@@ -83,4 +85,4 @@ export default [
       lastName: "Иванов",
     },
   },
-];
+] as Order[];
