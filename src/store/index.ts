@@ -1,13 +1,20 @@
-import { createStore } from "vuex";
+import { createStore, StoreOptions } from "vuex";
 import deliveryPointsMock from "@/mocks/delivery-points";
 import ordersMock from "@/mocks/orders";
 
-export default createStore({
-  state: {
-    order: ordersMock,
-    deliveryPoint: deliveryPointsMock,
+const defaultState = {
+  orders: ordersMock,
+  deliveryPoints: deliveryPointsMock,
+};
+
+const storeOptions: StoreOptions<typeof defaultState> = {
+  state: () => defaultState,
+  getters: {
+    getDeliveryPointById:
+      ({ deliveryPoints }) =>
+      (id: number) => {
+        return deliveryPoints.find((deliveryPoint) => deliveryPoint.id === id);
+      },
   },
-  mutations: {},
-  actions: {},
-  modules: {},
-});
+};
+export default createStore(storeOptions);

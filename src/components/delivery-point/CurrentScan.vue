@@ -1,18 +1,103 @@
 <template lang="pug">
-.current-scan Текущее сканирование
+.current-scan 
+  .title-wrapper
+    .title Текущее сканирование
+    span.status
+      span.scanned-orders-count {{scannedOrdersCount}} 
+      span из 
+      span.orders-count {{ordersCount}}
+  .order-info
+    .info(v-if="order")
+      .id Номер заказа: {{order.orderId}}
+      .city Город: {{order.deliveryInfo.deliveryPoint.shortName}}
+      .customer Покупатель: {{fullName}}
+    .warn(v-else)
+      .message Начните сканировать заказы для проверки
+    .status-image-wrapper
+      img(:src="statusImg")
+
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { Order } from "@/types/api/order";
+import { defineComponent, PropType } from "vue";
+import successImg from "@/assets/images/success.svg";
+import scanImg from "@/assets/images/scan.svg";
+import errorImg from "@/assets/images/error.svg";
 
 export default defineComponent({
   name: "current-scan",
+  props: {
+    order: {
+      type: Object as PropType<Order>,
+      required: true,
+    },
+    scannedOrdersCount: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    ordersCount: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    status: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      successImg,
+      scanImg,
+      errorImg,
+    };
+  },
+  computed: {
+    fullName(): string {
+      return `${this.order.customer.lastName} ${this.order.customer.firstName[0]}`;
+    },
+    statusImg(): string {
+      if (!this.status) return scanImg;
+      else if (this.status === "success") return successImg;
+      else return errorImg;
+    },
+  },
 });
 </script>
 
 <style scoped lang="stylus">
 .current-scan
-  background: #FFFFFF;
-  border-radius: 4px;
-  padding 32px 20px 32px 20px
+  background #FFFFFF
+  border-radius 4px
+  padding 20px
+  .title-wrapper
+    font-weight 600
+    font-size 22px
+    display flex
+    justify-content space-between
+    margin-bottom 20px
+  .order-info
+    display flex
+    justify-content space-between
+    align-items center
+    border 2px solid #C4C9D4
+    border-radius 4px
+    padding 24px
+    .warn
+      max-width 150px
+    .warn, .info
+      font-size 12px
+      color #303236
+      opacity 0.8
+    .status-image-wrapper
+      width 62px
+      height 62px
+      display flex
+      justify-content center
+      align-items center
+      background #ECEFF4
+      border-radius 4px
 </style>

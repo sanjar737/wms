@@ -2,9 +2,9 @@
 AppLayout(:breadcrumbs="breadcrumbs")
   .delivery-point
     .left-side
-      PointBlock
+      ScanProgress(:cityName="deliveryPoint.shortName" :scannedOrdersCount="2" :ordersCount="orders.length")
     .right-side
-      CurrentScan.current-scan
+      CurrentScan.current-scan(:ordersCount="orders.length")
       .orders
         .title Неотсканировано
         OrderList(:orders="orders")
@@ -15,7 +15,7 @@ import { defineComponent } from "vue";
 
 import OrderList from "@/components/delivery-point/OrderList.vue";
 import CurrentScan from "@/components/delivery-point/CurrentScan.vue";
-import PointBlock from "@/components/delivery-point/PointBlock.vue";
+import ScanProgress from "@/components/delivery-point/ScanProgress.vue";
 import AppLayout from "@/components/layouts/App.vue";
 
 import { DeliveryPoint } from "@/types/api/delivery-point";
@@ -23,7 +23,7 @@ import { DeliveryPoint } from "@/types/api/delivery-point";
 export default defineComponent({
   name: "delivery-point-list",
   components: {
-    PointBlock,
+    ScanProgress,
     CurrentScan,
     OrderList,
     AppLayout,

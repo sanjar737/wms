@@ -3,14 +3,13 @@
   .id Номер заказа: {{order.orderId}}
   .name {{fullName}}
   button.scaning
-    img(:src="shipmentImg")
+    img(src="@/assets/images/shipment.svg")
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
 import { Order } from "@/types/api/order";
-import shipmentImg from "@/assets/images/shipment.svg";
 
 export default defineComponent({
   name: "order-item",
@@ -19,11 +18,6 @@ export default defineComponent({
       type: Object as PropType<Order>,
       required: true,
     },
-  },
-  data() {
-    return {
-      shipmentImg,
-    };
   },
   computed: {
     fullName(): string {
