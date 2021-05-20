@@ -1,10 +1,11 @@
 <template lang="pug">
-.delivery-point
-  .left-side
-    PointBlock
-  .right-side
-    CurrentScan.current-scan
-    OrderList(:orders="orders")
+AppLayout(:breadcrumbs="breadcrumbs")
+  .delivery-point
+    .left-side
+      PointBlock
+    .right-side
+      CurrentScan.current-scan
+      OrderList(:orders="orders")
 </template>
 
 <script lang="ts">
@@ -12,6 +13,7 @@ import { defineComponent } from "vue";
 import OrderList from "@/components/delivery-point/OrderList.vue";
 import CurrentScan from "@/components/delivery-point/CurrentScan.vue";
 import PointBlock from "@/components/delivery-point/PointBlock.vue";
+import AppLayout from "@/components/layouts/App.vue";
 
 export default defineComponent({
   name: "delivery-point-list",
@@ -19,11 +21,20 @@ export default defineComponent({
     PointBlock,
     CurrentScan,
     OrderList,
+    AppLayout,
   },
   computed: {
     orders() {
-      return this.$store.state.order;
+      return this.$store.state.orders;
     },
+  },
+  data() {
+    return {
+      breadcrumbs: [
+        { href: "/", text: "Маршрутные листы" },
+        { href: "/1", text: "Отгрузка в НЧЛ-ВХТ" },
+      ],
+    };
   },
 });
 </script>
