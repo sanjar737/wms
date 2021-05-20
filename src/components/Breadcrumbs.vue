@@ -1,6 +1,6 @@
 <template lang="pug">
 .breadcrumbs
-  ul.breadcrumb-list 
+  ul.breadcrumb-list(v-if="breadcrumbs.length>1")
     li.breadcrumb-item(v-for="(breadcrumb, index) in breadcrumbs")
       router-link.link(:to="breadcrumb.href" v-if="index!==breadcrumbs.length-1") {{ breadcrumb.text }}
   .current-breadcrumb {{ breadcrumbs[breadcrumbs.length-1].text }}

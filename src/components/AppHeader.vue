@@ -4,21 +4,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default defineComponent({
-  name: "header",
+  name: "app-header",
   components: {
     Breadcrumbs,
   },
-  data() {
-    return {
-      breadcrumbs: [
-        { href: "/", text: "Маршрутные листы" },
-        { href: "/1", text: "Отгрузка в НЧЛ-ВХТ" },
-      ],
-    };
+  props: {
+    breadcrumbs: {
+      type: Array as PropType<{ href: string; text: string }[]>,
+      required: true,
+    },
   },
 });
 </script>

@@ -1,16 +1,12 @@
 <template lang="pug">
-Desktop
+router-view
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Desktop from "@/components/layouts/Desktop.vue";
 
 export default defineComponent({
   name: "App",
-  components: {
-    Desktop,
-  },
 });
 </script>
 
