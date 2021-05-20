@@ -1,7 +1,7 @@
 <template lang="pug">
 ul.delivery-point-list
-  li.order-item(v-for="deliveryPoint in deliveryPoints")
-    DeliveryPointItem(:deliveryPoint="deliveryPoint")
+  router-link.link(v-for="deliveryPoint in deliveryPoints" :to="`/delivery-points/${deliveryPoint.id}`")
+    DeliveryPointItem.delivery-point-item(:deliveryPoint="deliveryPoint")
 </template>
 
 <script lang="ts">
@@ -31,4 +31,10 @@ export default defineComponent({
   background: #FFFFFF;
   border-radius: 4px;
   padding 32px 20px 32px 20px
+  max-height: 340px;
+  overflow: auto;
+.link
+  display block
+  &:not(:last-child)
+    margin-bottom 10px
 </style>

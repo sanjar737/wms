@@ -11,16 +11,29 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
-body
+*
   margin 0
 ul
-  margin 0
   padding 0
   list-style-type none
-a, a:visited, a:hover, a:active {
+a, a:visited, a:hover, a:active
   color: inherit;
   text-decoration none
-}
+
 #app
   font-family Inter, Helvetica, Arial, sans-serif
+
+::-webkit-scrollbar
+  border: 4px solid transparent;
+  width: 4px
+
+
+::-webkit-scrollbar-track
+  background: #E0E4EB
+  border-radius: 4px
+
+
+::-webkit-scrollbar-thumb
+  background: #ABB0BA
+  border-radius: 4px
 </style>
