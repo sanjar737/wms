@@ -31,8 +31,8 @@ export default defineComponent({
   data() {
     return {
       breadcrumbs: [
-        { href: "/", text: "Маршрутные листы" },
-        { href: "/1", text: "Отгрузка в НЧЛ-ВХТ" },
+        { href: "/delivery-points", text: "Маршрутные листы" },
+        { href: "/delivery-points/1", text: "Отгрузка в НЧЛ-ВХТ" },
       ],
     };
   },

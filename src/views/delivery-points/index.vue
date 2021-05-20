@@ -1,7 +1,6 @@
 <template lang="pug">
 AppLayout(:breadcrumbs="breadcrumbs")
   .delivery-point-list 
-    h1 Пункты выдачи
     DeliveryPointList(:deliveryPoints="deliveryPoints")
 </template>
 
@@ -24,7 +23,7 @@ export default defineComponent({
   },
   data() {
     return {
-      breadcrumbs: [{ href: "/", text: "Маршрутные листы" }],
+      breadcrumbs: [{ href: "/delivery-points", text: "Маршрутные листы" }],
     };
   },
 });
