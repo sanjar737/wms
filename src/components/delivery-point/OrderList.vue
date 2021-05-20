@@ -1,7 +1,6 @@
 <template lang="pug">
 ul.order-list
-  li.order-item(v-for="order in orders")
-    OrderItem(:order="order")
+    OrderItem.order-item(v-for="order in orders" :order="order")
 </template>
 
 <script lang="ts">
@@ -28,7 +27,11 @@ export default defineComponent({
 
 <style scoped lang="stylus">
 .order-list
-  background: #FFFFFF;
+  padding-right 10px
+  overflow auto
+  max-height 340px
   border-radius: 4px;
-  padding 32px 20px 32px 20px
+.order-item
+  &:not(:last-child)
+    margin-bottom 10px
 </style>

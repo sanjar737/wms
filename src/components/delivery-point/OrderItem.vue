@@ -1,13 +1,16 @@
 <template lang="pug">
 .order-item
-  .id {{order.orderId}}
+  .id Номер заказа: {{order.orderId}}
   .name {{fullName}}
+  button.scaning
+    img(:src="shipmentImg")
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
 import { Order } from "@/types/api/order";
+import shipmentImg from "@/assets/images/shipment.svg";
 
 export default defineComponent({
   name: "order-item",
@@ -17,6 +20,11 @@ export default defineComponent({
       required: true,
     },
   },
+  data() {
+    return {
+      shipmentImg,
+    };
+  },
   computed: {
     fullName(): string {
       return `${this.order.customer.lastName} ${this.order.customer.firstName[0]}`;
@@ -25,4 +33,24 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="stylus"></style>
+<style scoped lang="stylus">
+.order-item
+  align-items center
+  padding 21px 24px
+  display flex
+  border 1px solid #D8D8D8
+  border-radius 4px
+  font-size 12px
+  color #303236
+  opacity 0.8
+  .id
+    margin-right 14px
+  .scaning
+    background: rgba(196, 196, 196, 0.2);
+    border-radius: 4px;
+    border: none;
+    padding 10px
+    margin-left: auto;
+    img
+      display: block;
+</style>
