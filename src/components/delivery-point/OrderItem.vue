@@ -7,11 +7,13 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
+import { Order } from "@/types/api/order";
+
 export default defineComponent({
   name: "order-item",
   props: {
     order: {
-      type: Object,
+      type: Object as PropType<Order>,
       required: true,
     },
   },

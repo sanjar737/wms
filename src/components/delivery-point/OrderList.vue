@@ -6,9 +6,10 @@ ul.order-list
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import OrderItem from "@/components/delivery-points/OrderItem.vue";
 
-import ordersMock from "@/mocks/orders";
+import OrderItem from "@/components/delivery-point/OrderItem.vue";
+
+import { Order } from "@/types/api/order";
 
 export default defineComponent({
   name: "order-list",
@@ -17,8 +18,9 @@ export default defineComponent({
   },
   props: {
     orders: {
-      type: Array as PropType<typeof ordersMock>,
-      required: true,
+      type: Array as PropType<Order[]>,
+      required: false,
+      default: () => [],
     },
   },
 });

@@ -9,9 +9,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import OrderList from "@/components/delivery-points/OrderList.vue";
-import CurrentScan from "@/components/delivery-points/CurrentScan.vue";
-import PointBlock from "@/components/delivery-points/PointBlock.vue";
+import OrderList from "@/components/delivery-point/OrderList.vue";
+import CurrentScan from "@/components/delivery-point/CurrentScan.vue";
+import PointBlock from "@/components/delivery-point/PointBlock.vue";
 
 export default defineComponent({
   name: "delivery-point-list",
