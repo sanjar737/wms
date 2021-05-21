@@ -21,7 +21,7 @@ export default defineComponent({
   },
   computed: {
     fullName(): string {
-      return `${this.order.customer.lastName} ${this.order.customer.firstName[0]}`;
+      return `${this.order.customer.lastName} ${this.order.customer.firstName[0]}.`;
     },
   },
 });

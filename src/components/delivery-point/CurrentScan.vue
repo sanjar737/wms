@@ -2,10 +2,7 @@
 .current-scan 
   .title-wrapper
     .title Текущее сканирование
-    span.status
-      span.scanned-orders-count {{scannedOrdersCount}} 
-      span из 
-      span.orders-count {{ordersCount}}
+    span.status {{scannedOrdersCount}} из {{ordersCount}}
   .order-info
     .info(v-if="scanningOrder")
       .id Номер заказа: {{scanningOrder.orderId}}
@@ -31,7 +28,8 @@ export default defineComponent({
   props: {
     scanningOrder: {
       type: Object as PropType<Order | null>,
-      required: true,
+      required: false,
+      default: null,
     },
     scannedOrdersCount: {
       type: Number,
@@ -57,6 +55,7 @@ export default defineComponent({
     };
   },
   computed: {
+    // если указать объект в темплейте pug-a, то слетает подсветка синтаксиса кода
     cityNameClasses(): {
       [K: string]: boolean;
     } {
@@ -65,12 +64,17 @@ export default defineComponent({
     fullName(): string {
       if (!this.scanningOrder) return "";
 
-      return `${this.scanningOrder.customer.lastName} ${this.scanningOrder.customer.firstName[0]}`;
+      return `${this.scanningOrder.customer.lastName} ${this.scanningOrder.customer.firstName[0]}.`;
     },
     statusImg(): string {
-      if (this.scanningResult === null) return scanImg;
-      else if (this.scanningResult === true) return successImg;
-      else return errorImg;
+      switch (this.scanningResult) {
+        case null:
+          return scanImg;
+        case true:
+          return successImg;
+        default:
+          return errorImg;
+      }
     },
   },
 });
