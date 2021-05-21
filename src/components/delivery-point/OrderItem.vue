@@ -37,6 +37,11 @@ export default defineComponent({
   font-size 12px
   color #303236
   opacity 0.8
+  transition background 0.1s ease-in-out
+  &:hover{
+    cursor pointer
+    background #f0f1f3
+  }
   .id
     margin-right 14px
   .image-wrapper

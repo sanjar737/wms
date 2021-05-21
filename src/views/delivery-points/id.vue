@@ -4,12 +4,15 @@ AppLayout(:breadcrumbs="breadcrumbs")
     .left-side
       ScanProgress(:cityName="deliveryPoint.shortName" :scannedOrdersCount="2" :ordersCount="rightOrders.length")
     .right-side
-      CurrentScan.current-scan(@click="scan" :scannedOrdersCount="scannedOrders.length" :ordersCount="orders.data.length" :scanningOrder="scanningOrder" :scanningResult="scanningResult")
+      CurrentScan.current-scan(:scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length" :scanningOrder="scanningOrder" :scanningResult="scanningResult")
       .orders
         .title Неотсканировано
         .loader(v-if="orders.loading") Загрузка
         .error(v-else-if="orders.error") {{orders.error}}
-        OrderList(:orders="notScannedOrders" v-else)
+        .result(v-else-if="allOrdersScanned")
+          .title Отлично, приступайте к отгрузке! 
+          .message Проверенные заказы соответсвуют ПВЗ.
+        OrderList(v-else :orders="notScannedOrders"  @scan="scan")
 </template>
 
 <script lang="ts">
@@ -22,6 +25,7 @@ import AppLayout from "@/components/layouts/App.vue";
 
 import { DeliveryPoint } from "@/types/api/delivery-point";
 import { Bradcrumb } from "@/types/index";
+import { Order } from "@/types/api/order";
 
 export default defineComponent({
   name: "delivery-point-list",
@@ -32,8 +36,13 @@ export default defineComponent({
     AppLayout,
   },
   computed: {
-    scanningOrder() {
-      return this.$store.state.scanningOrder;
+    scanningOrder: {
+      get() {
+        return this.$store.state.scanningOrder;
+      },
+      set(value: DeliveryPoint | null) {
+        return this.$store.commit("SET_SCANNING_ORDER", value);
+      },
     },
     deliveryPoint: {
       get() {
@@ -51,6 +60,9 @@ export default defineComponent({
     },
     notScannedOrders() {
       return this.$store.getters["notScannedOrders"];
+    },
+    allOrdersScanned() {
+      return this.$store.getters["allOrdersScanned"];
     },
     rightOrders() {
       return this.$store.getters["rightOrders"];
@@ -72,30 +84,28 @@ export default defineComponent({
       return this.$store.state.scanningResult;
     },
   },
-  created() {
-    const deliveryPoint: DeliveryPoint | null = this.$store.getters[
+  async created() {
+    let deliveryPoint: DeliveryPoint | null = this.$store.getters[
       "getDeliveryPointById"
     ](Number(this.$route.params.id));
 
+    if (!deliveryPoint) await this.$store.dispatch("getDeliveryPoints");
+
+    deliveryPoint = this.$store.getters["getDeliveryPointById"](
+      Number(this.$route.params.id)
+    );
     this.deliveryPoint = deliveryPoint;
   },
   methods: {
-    scan() {
+    scan(order: Order) {
+      console.log(order);
+
+      this.scanningOrder = order;
       this.$store.dispatch("scan");
     },
   },
-  async mounted() {
-    await this.$store.dispatch("getOrders");
-    console.log(this.deliveryPoint);
-
-    if (this.deliveryPoint) return;
-
-    await this.$store.dispatch("getDeliveryPoints");
-    const deliveryPoint: DeliveryPoint | null = this.$store.getters[
-      "getDeliveryPointById"
-    ](Number(this.$route.params.id));
-
-    this.deliveryPoint = deliveryPoint;
+  mounted() {
+    this.$store.dispatch("getOrders");
   },
   unmounted() {
     this.$store.dispatch("clearState");
@@ -116,11 +126,24 @@ export default defineComponent({
     .orders
       background: #FFFFFF;
       padding: 32px 10px 32px 20px;
-      .title
+      >.title
         color: #303236
         font-weight: 600
         font-size: 22px
         margin-bottom 30px
       .loader, .error
         text-align center
+      .result
+        background #FFFFFF
+        border 1px solid #D8D8D8
+        border-radius 4px
+        padding 25px
+        .title, .message
+          color #303236
+          opacity 0.8
+          font-weight 500
+          font-size 14px
+        .title
+          font-weight bold
+          margin-bottom 5px
 </style>

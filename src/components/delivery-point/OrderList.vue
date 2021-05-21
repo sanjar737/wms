@@ -1,6 +1,6 @@
 <template lang="pug">
 ul.order-list
-    OrderItem.order-item(v-for="order in orders" :order="order")
+    OrderItem.order-item(v-for="order in orders" :order="order" @click="scan(order)")
 </template>
 
 <script lang="ts">
@@ -20,6 +20,11 @@ export default defineComponent({
       type: Array as PropType<Order[]>,
       required: false,
       default: () => [],
+    },
+  },
+  methods: {
+    scan(order: Order) {
+      this.$emit("scan", order);
     },
   },
 });

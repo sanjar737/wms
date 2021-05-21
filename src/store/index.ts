@@ -33,13 +33,19 @@ const storeOptions: StoreOptions<typeof defaultState> = {
         );
       },
     notScannedOrders: ({ orders }) => {
-      return orders.data.filter((order) => order.scanningResult === undefined);
+      return orders.data.filter((order) => !order.scanningResult);
     },
     scannedOrders: ({ orders }) => {
       return orders.data.filter((order) => order.scanningResult !== undefined);
     },
     rightOrders: ({ orders }) => {
       return orders.data.filter((order) => order.scanningResult === true);
+    },
+    falseOrders: ({ orders }) => {
+      return orders.data.filter((order) => order.scanningResult === false);
+    },
+    allOrdersScanned: ({ orders }) => {
+      return orders.data.every((order) => order.scanningResult !== undefined);
     },
   },
   mutations: {
@@ -108,24 +114,20 @@ const storeOptions: StoreOptions<typeof defaultState> = {
     clearState({ commit }) {
       commit("SET_STATE", defaultState);
     },
-    scan({ commit, getters, state }) {
-      const notScannedOrders =
-        getters.notScannedOrders as OrderWithScanStatus[];
+    scan({ commit, state }) {
       const selectedDeliveryPoint = state.selectedDeliveryPoint;
+      const scanningOrder = state.scanningOrder;
 
-      if (!selectedDeliveryPoint || notScannedOrders.length === 0) return;
+      if (!selectedDeliveryPoint || !scanningOrder) return;
 
-      notScannedOrders.forEach((order, index) => {
-        commit("SET_SCANNING_ORDER", order);
+      const scunningResult =
+        scanningOrder.deliveryInfo.deliveryPoint.id ===
+        selectedDeliveryPoint.id;
+      commit("SET_SCANNING_RESULT", scunningResult);
 
-        const scunningResult =
-          order.deliveryInfo.deliveryPoint.id === selectedDeliveryPoint.id;
-        commit("SET_SCANNING_RESULT", scunningResult);
-
-        commit("SET_SCANNING_RESULT_TO_ORDER", {
-          orderId: order.orderId,
-          result: scunningResult,
-        });
+      commit("SET_SCANNING_RESULT_TO_ORDER", {
+        orderId: scanningOrder.orderId,
+        result: scunningResult,
       });
     },
   },
