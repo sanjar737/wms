@@ -3,6 +3,7 @@ AppLayout(:breadcrumbs="breadcrumbs")
   .delivery-points 
     .loader(v-if="deliveryPoints.loading") Загрузка
     .error(v-else-if="deliveryPoints.error") {{deliveryPoints.error}}
+    .empty-list(v-else-if="deliveryPointListIsEmpty") Нет пунктов выдачи
     DeliveryPointList(v-else :deliveryPoints="deliveryPoints.data" )
 </template>
 
@@ -23,6 +24,9 @@ export default defineComponent({
   computed: {
     deliveryPoints() {
       return this.$store.state.deliveryPoints;
+    },
+    deliveryPointListIsEmpty(): boolean {
+      return this.$store.getters["deliveryPointListIsEmpty"];
     },
   },
   mounted() {

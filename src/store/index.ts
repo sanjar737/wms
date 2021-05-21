@@ -32,21 +32,19 @@ const storeOptions: StoreOptions<typeof defaultState> = {
           (deliveryPoint) => deliveryPoint.id === id
         );
       },
-    notScannedOrders: ({ orders }) => {
-      return orders.data.filter((order) => !order.scanningResult);
-    },
-    scannedOrders: ({ orders }) => {
-      return orders.data.filter((order) => order.scanningResult !== undefined);
-    },
-    rightOrders: ({ orders }) => {
-      return orders.data.filter((order) => order.scanningResult === true);
-    },
-    falseOrders: ({ orders }) => {
-      return orders.data.filter((order) => order.scanningResult === false);
-    },
-    allOrdersScanned: ({ orders }) => {
-      return orders.data.every((order) => order.scanningResult !== undefined);
-    },
+    notScannedOrders: ({ orders }) =>
+      orders.data.filter((order) => !order.scanningResult),
+    scannedOrders: ({ orders }) =>
+      orders.data.filter((order) => order.scanningResult !== undefined),
+    rightOrders: ({ orders }) =>
+      orders.data.filter((order) => order.scanningResult === true),
+    falseOrders: ({ orders }) =>
+      orders.data.filter((order) => order.scanningResult === false),
+    allOrdersScanned: ({ orders }) =>
+      orders.data.every((order) => order.scanningResult !== undefined),
+    orderListIsEmpty: ({ orders }) => orders.data.length === 0,
+    deliveryPointListIsEmpty: ({ deliveryPoints }) =>
+      deliveryPoints.data.length === 0,
   },
   mutations: {
     SET_ORDERS(state, orders: Partial<typeof defaultState.orders>) {

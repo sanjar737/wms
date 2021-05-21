@@ -9,6 +9,7 @@ AppLayout(:breadcrumbs="breadcrumbs")
         .title Неотсканировано
         .loader(v-if="orders.loading") Загрузка
         .error(v-else-if="orders.error") {{orders.error}}
+        .empty-list(v-else-if="orderListIsEmpty") Нет заказов
         .result(v-else-if="allOrdersScanned")
           .title Отлично, приступайте к отгрузке! 
           .message Проверенные заказы соответсвуют ПВЗ.
@@ -55,6 +56,9 @@ export default defineComponent({
     orders() {
       return this.$store.state.orders;
     },
+    orderListIsEmpty(): boolean {
+      return this.$store.getters["orderListIsEmpty"];
+    },
     scannedOrders() {
       return this.$store.getters["scannedOrders"];
     },
@@ -98,14 +102,12 @@ export default defineComponent({
   },
   methods: {
     scan(order: Order) {
-      console.log(order);
-
       this.scanningOrder = order;
       this.$store.dispatch("scan");
     },
   },
   mounted() {
-    if (this.orders.data.length === 0) this.$store.dispatch("getOrders");
+    if (this.orderListIsEmpty) this.$store.dispatch("getOrders");
   },
   unmounted() {
     this.$store.dispatch("clearState");
