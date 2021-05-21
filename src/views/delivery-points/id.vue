@@ -2,7 +2,7 @@
 AppLayout(:breadcrumbs="breadcrumbs")
   .delivery-point(v-if="!!deliveryPoint")
     .left-side
-      ScanProgress(:cityName="deliveryPoint.shortName" :scannedOrdersCount="2" :ordersCount="rightOrders.length")
+      ScanProgress(:cityName="deliveryPoint.shortName" :scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length")
     .right-side
       CurrentScan.current-scan(:scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length" :scanningOrder="scanningOrder" :scanningResult="scanningResult")
       .orders
@@ -105,7 +105,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.$store.dispatch("getOrders");
+    if (this.orders.data.length === 0) this.$store.dispatch("getOrders");
   },
   unmounted() {
     this.$store.dispatch("clearState");

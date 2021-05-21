@@ -38,6 +38,7 @@ export default defineComponent({
   color #303236
   opacity 0.8
   transition background 0.1s ease-in-out
+  user-select: none;
   &:hover{
     cursor pointer
     background #f0f1f3
