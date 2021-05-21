@@ -2,7 +2,7 @@
 .order-item
   .id Номер заказа: {{order.orderId}}
   .name {{fullName}}
-  button.scaning
+  .image-wrapper
     img(src="@/assets/images/shipment.svg")
 </template>
 
@@ -39,10 +39,9 @@ export default defineComponent({
   opacity 0.8
   .id
     margin-right 14px
-  .scaning
+  .image-wrapper
     background: rgba(196, 196, 196, 0.2);
     border-radius: 4px;
-    border: none;
     padding 10px
     margin-left: auto;
     img

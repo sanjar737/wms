@@ -5,7 +5,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+
+import { Bradcrumb } from "@/types";
 
 export default defineComponent({
   name: "app-header",
@@ -14,7 +17,7 @@ export default defineComponent({
   },
   props: {
     breadcrumbs: {
-      type: Array as PropType<{ href: string; text: string }[]>,
+      type: Array as PropType<Bradcrumb[]>,
       required: true,
     },
   },

@@ -1,7 +1,9 @@
 <template lang="pug">
 AppLayout(:breadcrumbs="breadcrumbs")
   .delivery-points 
-    DeliveryPointList(:deliveryPoints="deliveryPoints")
+    .loader(v-if="deliveryPoints.loading") Загрузка
+    .error(v-else-if="deliveryPoints.error") {{deliveryPoints.error}}
+    DeliveryPointList(v-else :deliveryPoints="deliveryPoints.data" )
 </template>
 
 <script lang="ts">
@@ -9,6 +11,8 @@ import { defineComponent } from "vue";
 
 import DeliveryPointList from "@/components/delivery-point/DeliveryPointList.vue";
 import AppLayout from "@/components/layouts/App.vue";
+
+import { Bradcrumb } from "@/types";
 
 export default defineComponent({
   name: "delivery-point-list",
@@ -21,9 +25,14 @@ export default defineComponent({
       return this.$store.state.deliveryPoints;
     },
   },
+  mounted() {
+    this.$store.dispatch("getDeliveryPoints");
+  },
   data() {
     return {
-      breadcrumbs: [{ href: "/delivery-points", text: "Маршрутные листы" }],
+      breadcrumbs: [
+        { href: "/delivery-points", text: "Маршрутные листы" },
+      ] as Bradcrumb[],
     };
   },
 });
@@ -31,6 +40,8 @@ export default defineComponent({
 
 <style lang="stylus">
 .delivery-points
-  background: #fff;
-  padding: 32px 10px 32px 20px;
+  background #fff
+  padding 32px 10px 32px 20px
+  .loader, .error
+    text-align center
 </style>

@@ -85,4 +85,4 @@ export default [
       lastName: "Иванов",
     },
   },
-] as Order[];
+];

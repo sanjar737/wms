@@ -7,7 +7,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+
 import AppHeader from "@/components/AppHeader.vue";
+
+import { Bradcrumb } from "@/types";
 
 export default defineComponent({
   name: "desktop-layout",
@@ -16,7 +19,7 @@ export default defineComponent({
   },
   props: {
     breadcrumbs: {
-      type: Array as PropType<{ href: string; text: string }[]>,
+      type: Array as PropType<Bradcrumb[]>,
       required: true,
     },
   },

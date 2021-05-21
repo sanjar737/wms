@@ -7,9 +7,10 @@
       span из 
       span.orders-count {{ordersCount}}
   .order-info
-    .info(v-if="order")
-      .id Номер заказа: {{order.orderId}}
-      .city Город: {{order.deliveryInfo.deliveryPoint.shortName}}
+    .info(v-if="scanningOrder")
+      .id Номер заказа: {{scanningOrder.orderId}}
+      .city Город: 
+        span(:class="cityNameClasses") {{scanningOrder.deliveryInfo.deliveryPoint.shortName}}
       .customer Покупатель: {{fullName}}
     .warn(v-else)
       .message Начните сканировать заказы для проверки
@@ -28,8 +29,8 @@ import errorImg from "@/assets/images/error.svg";
 export default defineComponent({
   name: "current-scan",
   props: {
-    order: {
-      type: Object as PropType<Order>,
+    scanningOrder: {
+      type: Object as PropType<Order | null>,
       required: true,
     },
     scannedOrdersCount: {
@@ -42,8 +43,8 @@ export default defineComponent({
       required: false,
       default: 0,
     },
-    status: {
-      type: String,
+    scanningResult: {
+      type: Boolean as PropType<boolean | null>,
       required: false,
       default: null,
     },
@@ -56,12 +57,19 @@ export default defineComponent({
     };
   },
   computed: {
+    cityNameClasses(): {
+      [K: string]: boolean;
+    } {
+      return { "city-name--error": this.scanningResult === false };
+    },
     fullName(): string {
-      return `${this.order.customer.lastName} ${this.order.customer.firstName[0]}`;
+      if (!this.scanningOrder) return "";
+
+      return `${this.scanningOrder.customer.lastName} ${this.scanningOrder.customer.firstName[0]}`;
     },
     statusImg(): string {
-      if (!this.status) return scanImg;
-      else if (this.status === "success") return successImg;
+      if (this.scanningResult === null) return scanImg;
+      else if (this.scanningResult === true) return successImg;
       else return errorImg;
     },
   },
@@ -88,6 +96,9 @@ export default defineComponent({
     padding 24px
     .warn
       max-width 150px
+    .info
+      .city-name--error
+        color #E94949
     .warn, .info
       font-size 12px
       color #303236

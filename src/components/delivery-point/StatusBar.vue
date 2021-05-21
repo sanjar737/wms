@@ -30,7 +30,7 @@ export default defineComponent({
   width 106px
   height 106px
   border-radius 50%
-  background red
+  background #E94949
   padding 2px
   .substrate
     box-sizing: border-box;
