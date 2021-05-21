@@ -6,8 +6,7 @@ import ordersMock from "@/mocks/orders";
 import { Order } from "@/types/api/order";
 import { OrderWithScanStatus } from "@/types/index";
 import { DeliveryPoint } from "@/types/api/delivery-point";
-
-const defaultState = {
+const getDefaultState = () => ({
   orders: {
     data: [] as OrderWithScanStatus[],
     loading: false,
@@ -21,9 +20,11 @@ const defaultState = {
   selectedDeliveryPoint: null as DeliveryPoint | null,
   scanningOrder: null as Order | null,
   scanningResult: null as boolean | null,
-};
-const storeOptions: StoreOptions<typeof defaultState> = {
-  state: defaultState,
+});
+type State = ReturnType<typeof getDefaultState>;
+
+const storeOptions: StoreOptions<State> = {
+  state: getDefaultState(),
   getters: {
     getDeliveryPointById:
       ({ deliveryPoints }) =>
@@ -47,12 +48,12 @@ const storeOptions: StoreOptions<typeof defaultState> = {
       deliveryPoints.data.length === 0,
   },
   mutations: {
-    SET_ORDERS(state, orders: Partial<typeof defaultState.orders>) {
+    SET_ORDERS(state, orders: Partial<State["orders"]>) {
       Object.assign(state.orders, orders);
     },
     SET_DELIVERY_POINTS(
       state,
-      deliveryPoints: Partial<typeof defaultState.deliveryPoints>
+      deliveryPoints: Partial<State["deliveryPoints"]>
     ) {
       Object.assign(state.deliveryPoints, deliveryPoints);
     },
@@ -110,7 +111,7 @@ const storeOptions: StoreOptions<typeof defaultState> = {
       }
     },
     clearState({ commit }) {
-      commit("SET_STATE", defaultState);
+      commit("SET_STATE", getDefaultState());
     },
     scan({ commit, state }) {
       const selectedDeliveryPoint = state.selectedDeliveryPoint;
