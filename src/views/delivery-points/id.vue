@@ -1,6 +1,8 @@
 <template lang="pug">
 AppLayout(:breadcrumbs="breadcrumbs")
-  .delivery-point(v-if="!!deliveryPoint")
+  .loader(v-if="deliveryPoint.loading") Загрузка
+  .error(v-else-if="deliveryPoint.error") {{deliveryPoint.error}}
+  .delivery-point(v-else)
     .left-side
       ScanProgress(:cityName="deliveryPoint.shortName" :scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length")
     .right-side
@@ -24,7 +26,6 @@ import CurrentScan from "@/components/delivery-point/CurrentScan.vue";
 import ScanProgress from "@/components/delivery-point/ScanProgress.vue";
 import AppLayout from "@/components/layouts/App.vue";
 
-import { DeliveryPoint } from "@/types/api/delivery-point";
 import { Bradcrumb } from "@/types/index";
 import { Order } from "@/types/api/order";
 
@@ -45,13 +46,11 @@ export default defineComponent({
         return this.$store.commit("SET_SCANNING_ORDER", value);
       },
     },
-    deliveryPoint: {
-      get() {
-        return this.$store.state.selectedDeliveryPoint;
-      },
-      set(value: DeliveryPoint | null) {
-        return this.$store.commit("SET_SELECTED_DELIVERY_POINT", value);
-      },
+    scanningResult(): boolean | null {
+      return this.$store.state.scanningResult;
+    },
+    deliveryPoint() {
+      return this.$store.state.deliveryPoint;
     },
     orders() {
       return this.$store.state.orders;
@@ -72,41 +71,30 @@ export default defineComponent({
       return this.$store.getters["rightOrders"];
     },
     breadcrumbs(): Bradcrumb[] {
-      const breadcrumbs = [
+      let deliveryPointText = "...";
+
+      if (this.deliveryPoint.error) deliveryPointText = "неизвестно";
+      if (this.deliveryPoint.data?.shortName)
+        deliveryPointText = this.deliveryPoint.data?.shortName;
+
+      return [
         { href: "/delivery-points", text: "Маршрутные листы" },
+        {
+          href: this.$route.fullPath,
+          text: `Отгрузка в ${deliveryPointText}`,
+        },
       ];
-
-      if (this.deliveryPoint)
-        breadcrumbs.push({
-          href: `/delivery-points/${this.deliveryPoint.id}`,
-          text: `Отгрузка в ${this.deliveryPoint.shortName}`,
-        });
-
-      return breadcrumbs;
     },
-    scanningResult(): boolean | null {
-      return this.$store.state.scanningResult;
-    },
-  },
-  async created() {
-    let deliveryPoint: DeliveryPoint | null = this.$store.getters[
-      "getDeliveryPointById"
-    ](Number(this.$route.params.id));
-
-    if (!deliveryPoint) await this.$store.dispatch("getDeliveryPoints");
-
-    deliveryPoint = this.$store.getters["getDeliveryPointById"](
-      Number(this.$route.params.id)
-    );
-    this.deliveryPoint = deliveryPoint;
   },
   methods: {
     scan() {
       this.$store.dispatch("scan");
     },
   },
-  mounted() {
-    if (this.orderListIsEmpty) this.$store.dispatch("getOrders");
+  async mounted() {
+    const deliveryPointId = Number(this.$route.params.id);
+    await this.$store.dispatch("getDeliveryPoint", deliveryPointId);
+    this.$store.dispatch("getOrders");
   },
   unmounted() {
     this.$store.dispatch("clearState");

@@ -17,7 +17,11 @@ const getDefaultState = () => ({
     loading: false,
     error: null as string | null,
   },
-  selectedDeliveryPoint: null as DeliveryPoint | null,
+  deliveryPoint: {
+    data: null as DeliveryPoint | null,
+    loading: false,
+    error: null as string | null,
+  },
   scanningOrder: null as Order | null,
   scanningResult: null as boolean | null,
 });
@@ -63,8 +67,8 @@ const storeOptions: StoreOptions<State> = {
     SET_SCANNING_RESULT(state, scanningResult: boolean | null) {
       state.scanningResult = scanningResult;
     },
-    SET_SELECTED_DELIVERY_POINT(state, deliveryPoint: DeliveryPoint) {
-      state.selectedDeliveryPoint = deliveryPoint;
+    SET_DELIVERY_POINT(state, deliveryPoint: Partial<State["deliveryPoint"]>) {
+      Object.assign(state.deliveryPoint, deliveryPoint);
     },
     SET_SCANNING_RESULT_TO_ORDER(
       state,
@@ -103,21 +107,21 @@ const storeOptions: StoreOptions<State> = {
       }
     },
     async getDeliveryPoint({ commit }, id: number) {
-      commit("SET_DELIVERY_POINTS", { loading: true, error: null });
+      commit("SET_DELIVERY_POINT", { loading: true, error: null });
       try {
         const deliveryPoint = await api.getDeliveryPoint(id);
-        commit("SET_DELIVERY_POINTS", { data: deliveryPoint });
+        commit("SET_DELIVERY_POINT", { data: deliveryPoint });
       } catch (error) {
-        commit("SET_DELIVERY_POINTS", { error: error.message });
+        commit("SET_DELIVERY_POINT", { error: error.message });
       } finally {
-        commit("SET_DELIVERY_POINTS", { loading: false });
+        commit("SET_DELIVERY_POINT", { loading: false });
       }
     },
     clearState({ commit }) {
       commit("SET_STATE", getDefaultState());
     },
     scan({ commit, state }) {
-      const selectedDeliveryPoint = state.selectedDeliveryPoint;
+      const selectedDeliveryPoint = state.deliveryPoint.data;
       const scanningOrder = state.scanningOrder;
 
       if (!selectedDeliveryPoint || !scanningOrder) return;

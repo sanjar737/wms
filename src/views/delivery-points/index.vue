@@ -35,7 +35,7 @@ export default defineComponent({
   data() {
     return {
       breadcrumbs: [
-        { href: "/delivery-points", text: "Маршрутные листы" },
+        { href: this.$route.fullPath, text: "Маршрутные листы" },
       ] as Bradcrumb[],
     };
   },

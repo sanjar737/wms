@@ -22,9 +22,12 @@ export default {
   getDeliveryPoint(id: number) {
     return new Promise<DeliveryPoint>((resolve, reject) => {
       setTimeout(() => {
-        if (ordersMock[id] === undefined)
+        const deliveryPoint = deliveryPointsMock.find(
+          (deliveryPoint) => deliveryPoint.id === id
+        );
+        if (deliveryPoint === undefined)
           reject(new Error(`Пункт выдачи с номерм ${id} не найден`));
-        else resolve(JSON.parse(JSON.stringify(ordersMock[id])));
+        else resolve(JSON.parse(JSON.stringify(deliveryPoint)));
       }, 500);
     });
   },
