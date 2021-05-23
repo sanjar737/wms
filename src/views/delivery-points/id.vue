@@ -2,9 +2,9 @@
 AppLayout(:breadcrumbs="breadcrumbs")
   .loader(v-if="deliveryPoint.loading") Загрузка
   .error(v-else-if="deliveryPoint.error") {{deliveryPoint.error}}
-  .delivery-point(v-else)
+  .delivery-point(v-else-if="deliveryPoint.data")
     .left-side
-      ScanProgress(:cityName="deliveryPoint.shortName" :scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length")
+      ScanProgress(:cityName="deliveryPoint.data.shortName" :scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length")
     .right-side
       CurrentScan.current-scan(:scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length" :scanningOrder="scanningOrder" :scanningResult="scanningResult")
       .orders
@@ -40,35 +40,35 @@ export default defineComponent({
   computed: {
     scanningOrder: {
       get() {
-        return this.$store.state.scanningOrder;
+        return this.$store.state.order.scanning.order;
       },
       set(value: Order | null) {
-        return this.$store.commit("SET_SCANNING_ORDER", value);
+        return this.$store.commit("order/SET_SCANNING", { order: value });
       },
     },
     scanningResult(): boolean | null {
-      return this.$store.state.scanningResult;
+      return this.$store.state.order.scanning.result;
     },
     deliveryPoint() {
-      return this.$store.state.deliveryPoint;
+      return this.$store.state.deliveryPoint.deliveryPoint;
     },
     orders() {
-      return this.$store.state.orders;
+      return this.$store.state.order.orders;
     },
     orderListIsEmpty(): boolean {
-      return this.$store.getters["orderListIsEmpty"];
+      return this.$store.getters["order/orderListIsEmpty"];
     },
     scannedOrders(): Order[] {
-      return this.$store.getters["scannedOrders"];
+      return this.$store.getters["order/scannedOrders"];
     },
     notScannedOrders(): Order[] {
-      return this.$store.getters["notScannedOrders"];
+      return this.$store.getters["order/notScannedOrders"];
     },
     allOrdersScanned(): boolean {
-      return this.$store.getters["allOrdersScanned"];
+      return this.$store.getters["order/allOrdersScanned"];
     },
     rightOrders(): Order[] {
-      return this.$store.getters["rightOrders"];
+      return this.$store.getters["order/rightOrders"];
     },
     breadcrumbs(): Bradcrumb[] {
       let deliveryPointText = "...";
@@ -88,16 +88,19 @@ export default defineComponent({
   },
   methods: {
     scan() {
-      this.$store.dispatch("scan");
+      this.$store.dispatch("order/scan");
     },
   },
   async mounted() {
     const deliveryPointId = Number(this.$route.params.id);
-    await this.$store.dispatch("getDeliveryPoint", deliveryPointId);
-    this.$store.dispatch("getOrders");
+    await this.$store.dispatch(
+      "deliveryPoint/getDeliveryPoint",
+      deliveryPointId
+    );
+    this.$store.dispatch("order/getOrders");
   },
   unmounted() {
-    this.$store.dispatch("clearState");
+    this.$store.dispatch("order/clearState");
   },
 });
 </script>

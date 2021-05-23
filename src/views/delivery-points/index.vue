@@ -23,14 +23,14 @@ export default defineComponent({
   },
   computed: {
     deliveryPoints() {
-      return this.$store.state.deliveryPoints;
+      return this.$store.state.deliveryPoint.deliveryPoints;
     },
     deliveryPointListIsEmpty(): boolean {
-      return this.$store.getters["deliveryPointListIsEmpty"];
+      return this.$store.getters["deliveryPoint/deliveryPointListIsEmpty"];
     },
   },
   mounted() {
-    this.$store.dispatch("getDeliveryPoints");
+    this.$store.dispatch("deliveryPoint/getDeliveryPoints");
   },
   data() {
     return {
