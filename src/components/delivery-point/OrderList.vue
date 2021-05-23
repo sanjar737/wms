@@ -15,6 +15,15 @@ export default defineComponent({
   components: {
     OrderItem,
   },
+  emits: {
+    "update:modelValue": function (payload: Order) {
+      return (
+        typeof payload.orderId === "number" &&
+        payload.deliveryInfo !== undefined &&
+        payload.customer !== undefined
+      );
+    },
+  },
   props: {
     orders: {
       type: Array as PropType<Order[]>,
