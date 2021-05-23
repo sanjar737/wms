@@ -45,7 +45,7 @@ export default defineComponent({
 <style lang="stylus">
 .delivery-points
   background #fff
-  padding 32px 10px 32px 20px
+  padding 32px 20px 32px 20px
   .loader, .error
     text-align center
 </style>

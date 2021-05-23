@@ -22,7 +22,7 @@ export default defineComponent({
 <style scoped lang="stylus">
 .desktop-layout
   background #F0F1F3
-  height 100vh
+  height 100%
   .header
     margin-bottom 20px
   .container

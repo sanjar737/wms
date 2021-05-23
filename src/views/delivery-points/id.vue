@@ -117,7 +117,7 @@ export default defineComponent({
       margin-bottom 20px
     .orders
       background: #FFFFFF;
-      padding: 32px 10px 32px 20px;
+      padding: 32px 20px 32px 20px;
       >.title
         color: #303236
         font-weight: 600

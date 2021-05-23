@@ -29,7 +29,6 @@ export default defineComponent({
 <style scoped lang="stylus">
 .delivery-point-list
   border-radius: 4px;
-  padding-right 10px
   max-height: 340px;
   overflow: auto;
 .link

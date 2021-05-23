@@ -11,6 +11,9 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
+html, body, #app{
+  height 100%
+}
 *
   margin 0
 ul
@@ -23,17 +26,17 @@ a, a:visited, a:hover, a:active
 #app
   font-family Inter, Helvetica, Arial, sans-serif
 
+
 ::-webkit-scrollbar
-  border: 4px solid transparent;
-  width: 4px
-
-
-::-webkit-scrollbar-track
-  background: #E0E4EB
-  border-radius: 4px
-
-
-::-webkit-scrollbar-thumb
-  background: #ABB0BA
-  border-radius: 4px
+  $padding-left = 11px
+  $width = 4px
+  width: $padding-left+$width
+  &-track
+    background #E0E4EB
+    border-left $padding-left solid rgba(255,255,255,0)
+    background-clip padding-box
+  &-thumb
+    background #ABB0BA
+    border-left $padding-left solid rgba(255,255,255,0)
+    background-clip padding-box
 </style>

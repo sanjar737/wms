@@ -46,7 +46,6 @@ export default defineComponent({
 
 <style scoped lang="stylus">
 .order-list
-  padding-right 10px
   overflow auto
   max-height 340px
   border-radius: 4px;
