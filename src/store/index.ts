@@ -1,11 +1,11 @@
 import { createStore, StoreOptions } from "vuex";
 
-import deliveryPointsMock from "@/mocks/delivery-points";
-import ordersMock from "@/mocks/orders";
+import api from "@/plugins/api";
 
 import { Order } from "@/types/api/order";
 import { OrderWithScanStatus } from "@/types/index";
 import { DeliveryPoint } from "@/types/api/delivery-point";
+
 const getDefaultState = () => ({
   orders: {
     data: [] as OrderWithScanStatus[],
@@ -83,11 +83,7 @@ const storeOptions: StoreOptions<State> = {
     async getOrders({ commit }) {
       commit("SET_ORDERS", { loading: true, error: null });
       try {
-        const orders = await new Promise<Order[]>((resolve) => {
-          setTimeout(() => {
-            resolve(JSON.parse(JSON.stringify(ordersMock)));
-          }, 500);
-        });
+        const orders = await api.getOrders();
         commit("SET_ORDERS", { data: orders });
       } catch (error) {
         commit("SET_ORDERS", { error: error.message });
@@ -98,12 +94,19 @@ const storeOptions: StoreOptions<State> = {
     async getDeliveryPoints({ commit }) {
       commit("SET_DELIVERY_POINTS", { loading: true, error: null });
       try {
-        const deliveryPoints = await new Promise<DeliveryPoint[]>((resolve) => {
-          setTimeout(() => {
-            resolve(JSON.parse(JSON.stringify(deliveryPointsMock)));
-          }, 500);
-        });
+        const deliveryPoints = await api.getDeliveryPoints();
         commit("SET_DELIVERY_POINTS", { data: deliveryPoints });
+      } catch (error) {
+        commit("SET_DELIVERY_POINTS", { error: error.message });
+      } finally {
+        commit("SET_DELIVERY_POINTS", { loading: false });
+      }
+    },
+    async getDeliveryPoint({ commit }, id: number) {
+      commit("SET_DELIVERY_POINTS", { loading: true, error: null });
+      try {
+        const deliveryPoint = await api.getDeliveryPoint(id);
+        commit("SET_DELIVERY_POINTS", { data: deliveryPoint });
       } catch (error) {
         commit("SET_DELIVERY_POINTS", { error: error.message });
       } finally {
