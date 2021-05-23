@@ -9,7 +9,7 @@ AppLayout(:breadcrumbs="breadcrumbs")
       CurrentScan.current-scan(:scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length" :scanningOrder="scanningOrder" :scanningResult="scanningResult")
       .orders
         .title Неотсканировано
-        transition(name="fade" mode="out-in")
+        TransitionFade
           .loader(v-if="orders.loading" key="load") Загрузка
           .error(v-else-if="orders.error" key="error") {{orders.error}}
           .empty-list(v-else-if="orders.loaded && orderListIsEmpty" key="empty") Нет заказов
@@ -26,6 +26,7 @@ import OrderList from "@/components/delivery-point/OrderList.vue";
 import CurrentScan from "@/components/delivery-point/CurrentScan.vue";
 import ScanProgress from "@/components/delivery-point/ScanProgress.vue";
 import AppLayout from "@/components/layouts/App.vue";
+import TransitionFade from "@/components/transition/TransitionFade.vue";
 
 import { Bradcrumb } from "@/types/index";
 import { Order } from "@/types/api/order";
@@ -37,6 +38,7 @@ export default defineComponent({
     CurrentScan,
     OrderList,
     AppLayout,
+    TransitionFade,
   },
   computed: {
     scanningOrder: {
@@ -108,16 +110,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="stylus">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .delivery-point
   display flex
   justify-content space-between

@@ -10,11 +10,13 @@ const getDefaultState = () => ({
     data: [] as DeliveryPoint[],
     loading: false,
     error: null as string | null,
+    loaded: false,
   },
   deliveryPoint: {
     data: null as DeliveryPoint | null,
     loading: false,
     error: null as string | null,
+    loaded: false,
   },
 });
 
@@ -48,10 +50,14 @@ const mutations: MutationTree<State> = {
 
 const actions: ActionTree<State, RootState> = {
   async getDeliveryPoints({ commit }) {
-    commit("SET_DELIVERY_POINTS", { loading: true, error: null });
+    commit("SET_DELIVERY_POINTS", {
+      loading: true,
+      error: null,
+      loaded: false,
+    });
     try {
       const deliveryPoints = await api.getDeliveryPoints();
-      commit("SET_DELIVERY_POINTS", { data: deliveryPoints });
+      commit("SET_DELIVERY_POINTS", { data: deliveryPoints, loaded: true });
     } catch (error) {
       commit("SET_DELIVERY_POINTS", { error: error.message });
     } finally {
@@ -59,10 +65,10 @@ const actions: ActionTree<State, RootState> = {
     }
   },
   async getDeliveryPoint({ commit }, id: number) {
-    commit("SET_DELIVERY_POINT", { loading: true, error: null });
+    commit("SET_DELIVERY_POINT", { loading: true, error: null, loaded: false });
     try {
       const deliveryPoint = await api.getDeliveryPoint(id);
-      commit("SET_DELIVERY_POINT", { data: deliveryPoint });
+      commit("SET_DELIVERY_POINT", { data: deliveryPoint, loaded: true });
     } catch (error) {
       commit("SET_DELIVERY_POINT", { error: error.message });
     } finally {

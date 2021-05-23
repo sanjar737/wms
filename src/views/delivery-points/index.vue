@@ -1,10 +1,11 @@
 <template lang="pug">
 AppLayout(:breadcrumbs="breadcrumbs")
-  .delivery-points 
-    .loader(v-if="deliveryPoints.loading") Загрузка
-    .error(v-else-if="deliveryPoints.error") {{deliveryPoints.error}}
-    .empty-list(v-else-if="deliveryPointListIsEmpty") Нет пунктов выдачи
-    DeliveryPointList(v-else :deliveryPoints="deliveryPoints.data" )
+  .delivery-points
+    TransitionFade 
+      .loader(v-if="deliveryPoints.loading" key="load") Загрузка
+      .error(v-else-if="deliveryPoints.error" key="error") {{deliveryPoints.error}}
+      .empty-list(v-else-if="deliveryPoints.loaded && deliveryPointListIsEmpty" key="empty") Нет пунктов выдачи
+      DeliveryPointList(v-else :deliveryPoints="deliveryPoints.data" key="delivery-points")
 </template>
 
 <script lang="ts">
@@ -12,6 +13,7 @@ import { defineComponent } from "vue";
 
 import DeliveryPointList from "@/components/delivery-point/DeliveryPointList.vue";
 import AppLayout from "@/components/layouts/App.vue";
+import TransitionFade from "@/components/transition/TransitionFade.vue";
 
 import { Bradcrumb } from "@/types";
 
@@ -20,6 +22,7 @@ export default defineComponent({
   components: {
     DeliveryPointList,
     AppLayout,
+    TransitionFade,
   },
   computed: {
     deliveryPoints() {
@@ -30,7 +33,8 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.$store.dispatch("deliveryPoint/getDeliveryPoints");
+    if (!this.deliveryPoints.data.length)
+      this.$store.dispatch("deliveryPoint/getDeliveryPoints");
   },
   data() {
     return {

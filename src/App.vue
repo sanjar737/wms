@@ -1,11 +1,17 @@
 <template lang="pug">
-router-view
+router-view(v-slot="{ Component }")
+  TransitionFade
+    component(:is="Component")
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import TransitionFade from "@/components/transition/TransitionFade.vue";
 
 export default defineComponent({
+  components: {
+    TransitionFade,
+  },
   name: "App",
 });
 </script>
