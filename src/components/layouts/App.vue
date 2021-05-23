@@ -11,6 +11,7 @@ import { defineComponent } from "vue";
 import AppHeader from "@/components/AppHeader.vue";
 
 export default defineComponent({
+  inheritAttrs: false,
   name: "desktop-layout",
   components: {
     AppHeader,

@@ -9,6 +9,7 @@ import { defineComponent } from "vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default defineComponent({
+  inheritAttrs: false,
   name: "app-header",
   components: {
     Breadcrumbs,

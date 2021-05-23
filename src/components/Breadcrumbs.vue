@@ -12,6 +12,7 @@ import { defineComponent, PropType } from "vue";
 import { Bradcrumb } from "@/types";
 
 export default defineComponent({
+  inheritAttrs: false,
   name: "breadcrumbs",
   props: {
     breadcrumbs: {
