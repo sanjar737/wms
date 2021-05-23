@@ -1,27 +1,19 @@
 <template lang="pug">
 .desktop-layout
-  AppHeader.header(:breadcrumbs="breadcrumbs")
+  AppHeader.header(v-bind="$attrs")
   .container
     slot
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 
 import AppHeader from "@/components/AppHeader.vue";
-
-import { Bradcrumb } from "@/types";
 
 export default defineComponent({
   name: "desktop-layout",
   components: {
     AppHeader,
-  },
-  props: {
-    breadcrumbs: {
-      type: Array as PropType<Bradcrumb[]>,
-      required: true,
-    },
   },
 });
 </script>

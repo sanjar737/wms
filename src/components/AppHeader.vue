@@ -1,25 +1,17 @@
 <template lang="pug">
 .header
-  Breadcrumbs(:breadcrumbs="breadcrumbs")
+  Breadcrumbs(v-bind="$attrs")
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-
-import { Bradcrumb } from "@/types";
 
 export default defineComponent({
   name: "app-header",
   components: {
     Breadcrumbs,
-  },
-  props: {
-    breadcrumbs: {
-      type: Array as PropType<Bradcrumb[]>,
-      required: true,
-    },
   },
 });
 </script>
