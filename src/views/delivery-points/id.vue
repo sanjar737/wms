@@ -101,6 +101,7 @@ export default defineComponent({
   },
   unmounted() {
     this.$store.dispatch("order/clearState");
+    this.$store.dispatch("deliveryPoint/clearDeliveryPoint");
   },
 });
 </script>

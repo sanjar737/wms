@@ -69,8 +69,8 @@ const actions: ActionTree<State, RootState> = {
       commit("SET_DELIVERY_POINT", { loading: false });
     }
   },
-  clearState({ commit }) {
-    commit("SET_STATE", getDefaultState());
+  clearDeliveryPoint({ commit }) {
+    commit("SET_DELIVERY_POINT", getDefaultState().deliveryPoint);
   },
 };
 
