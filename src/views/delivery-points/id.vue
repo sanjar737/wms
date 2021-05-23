@@ -13,7 +13,7 @@ AppLayout(:breadcrumbs="breadcrumbs")
         .result(v-else-if="allOrdersScanned")
           .title Отлично, приступайте к отгрузке! 
           .message Проверенные заказы соответсвуют ПВЗ.
-        OrderList(v-else :orders="notScannedOrders"  @scan="scan")
+        OrderList(v-else :orders="notScannedOrders" v-model="scanningOrder"  @update:modelValue="scan")
 </template>
 
 <script lang="ts">
@@ -41,7 +41,7 @@ export default defineComponent({
       get() {
         return this.$store.state.scanningOrder;
       },
-      set(value: DeliveryPoint | null) {
+      set(value: Order | null) {
         return this.$store.commit("SET_SCANNING_ORDER", value);
       },
     },
@@ -59,16 +59,16 @@ export default defineComponent({
     orderListIsEmpty(): boolean {
       return this.$store.getters["orderListIsEmpty"];
     },
-    scannedOrders() {
+    scannedOrders(): Order[] {
       return this.$store.getters["scannedOrders"];
     },
-    notScannedOrders() {
+    notScannedOrders(): Order[] {
       return this.$store.getters["notScannedOrders"];
     },
-    allOrdersScanned() {
+    allOrdersScanned(): boolean {
       return this.$store.getters["allOrdersScanned"];
     },
-    rightOrders() {
+    rightOrders(): Order[] {
       return this.$store.getters["rightOrders"];
     },
     breadcrumbs(): Bradcrumb[] {
@@ -101,8 +101,7 @@ export default defineComponent({
     this.deliveryPoint = deliveryPoint;
   },
   methods: {
-    scan(order: Order) {
-      this.scanningOrder = order;
+    scan() {
       this.$store.dispatch("scan");
     },
   },
