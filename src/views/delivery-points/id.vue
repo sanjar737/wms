@@ -9,13 +9,14 @@ AppLayout(:breadcrumbs="breadcrumbs")
       CurrentScan.current-scan(:scannedOrdersCount="rightOrders.length" :ordersCount="orders.data.length" :scanningOrder="scanningOrder" :scanningResult="scanningResult")
       .orders
         .title Неотсканировано
-        .loader(v-if="orders.loading") Загрузка
-        .error(v-else-if="orders.error") {{orders.error}}
-        .empty-list(v-else-if="orderListIsEmpty") Нет заказов
-        .result(v-else-if="allOrdersScanned")
-          .title Отлично, приступайте к отгрузке! 
-          .message Проверенные заказы соответсвуют ПВЗ.
-        OrderList(v-else :orders="notScannedOrders" v-model="scanningOrder"  @update:modelValue="scan")
+        transition(name="fade" mode="out-in")
+          .loader(v-if="orders.loading" key="load") Загрузка
+          .error(v-else-if="orders.error" key="error") {{orders.error}}
+          .empty-list(v-else-if="orders.loaded && orderListIsEmpty" key="empty") Нет заказов
+          .result(v-else-if="allOrdersScanned" key="result")
+            .title Отлично, приступайте к отгрузке! 
+            .message Проверенные заказы соответсвуют ПВЗ.
+          OrderList(v-else :orders="notScannedOrders" key="orders" v-model="scanningOrder"  @update:modelValue="scan")
 </template>
 
 <script lang="ts">
@@ -107,6 +108,16 @@ export default defineComponent({
 </script>
 
 <style scoped lang="stylus">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .delivery-point
   display flex
   justify-content space-between

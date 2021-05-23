@@ -15,6 +15,7 @@ const getDefaultState = () => ({
     data: [] as OrderWithScanStatus[],
     loading: false,
     error: null as string | null,
+    loaded: false,
   },
   scanning: {
     order: null as Order | null,
@@ -35,8 +36,11 @@ const getters: GetterTree<State, RootState> = {
     orders.data.filter((order) => order.scanningResult === true),
   falseOrders: ({ orders }) =>
     orders.data.filter((order) => order.scanningResult === false),
-  allOrdersScanned: ({ orders }) =>
-    orders.data.every((order) => order.scanningResult !== undefined),
+  allOrdersScanned: ({ orders }) => {
+    if (!orders.data.length) return false;
+
+    return orders.data.every((order) => order.scanningResult !== undefined);
+  },
   orderListIsEmpty: ({ orders }) => orders.data.length === 0,
 };
 
@@ -63,10 +67,10 @@ const mutations: MutationTree<State> = {
 
 const actions: ActionTree<State, RootState> = {
   async getOrders({ commit }) {
-    commit("SET_ORDERS", { loading: true, error: null });
+    commit("SET_ORDERS", { loading: true, error: null, loaded: false });
     try {
       const orders = await api.getOrders();
-      commit("SET_ORDERS", { data: orders });
+      commit("SET_ORDERS", { data: orders, loaded: true });
     } catch (error) {
       commit("SET_ORDERS", { error: error.message });
     } finally {
