@@ -1,6 +1,7 @@
 <template lang="pug">
 ul.order-list
-    OrderItem.order-item(v-for="order in orders" :order="order" @click="choice(order)")
+  transition-group(name="list")
+    OrderItem.order-item(v-for="order in orders" :order="order" :key="order.orderId" @click="choice(order)")
 </template>
 
 <script lang="ts">
@@ -45,11 +46,24 @@ export default defineComponent({
 </script>
 
 <style scoped lang="stylus">
+.list-enter-from,
+.list-leave-to
+  opacity 0
+  transform translateY(30px)
+
+.list-leave-active {
+  position absolute
+  width 100%
+  box-sizing border-box
+}
+
 .order-list
+  position relative
   overflow auto
   max-height 340px
   border-radius: 4px;
 .order-item
+  transition all 0.2s ease
   &:not(:last-child)
     margin-bottom 10px
 </style>

@@ -3,25 +3,32 @@
   .title-wrapper
     .title Текущее сканирование
     span.status {{scannedOrdersCount}} из {{ordersCount}}
-  .order-info
-    .info(v-if="scanningOrder")
-      .id Номер заказа: {{scanningOrder.orderId}}
-      .city Город: 
-        span(:class="cityNameClasses") {{scanningOrder.deliveryInfo.deliveryPoint.shortName}}
-      .customer Покупатель: {{fullName}}
-    .warn(v-else)
-      .message Начните сканировать заказы для проверки
-    .status-image-wrapper
-      img(:src="statusImg")
-
+  transition(name="bounce" mode="out-in")
+    .warn(v-if="scanningResult===null" key="warn")
+      .text Начните сканировать заказы для проверки
+      .status-image-wrapper
+        img(src="@/assets/images/scan.svg")
+    .error(v-else-if="scanningResult===false" :key="scanningOrder.orderId")
+      .text
+        .id Номер заказа: {{scanningOrder.orderId}}
+        .city Город: 
+          span.city-name {{scanningOrder.deliveryInfo.deliveryPoint.shortName}}
+        .customer Покупатель: {{fullName}}
+      .status-image-wrapper
+        img(src="@/assets/images/error.svg")
+    .info(v-else :key="scanningOrder.orderId")
+      .text
+        .id Номер заказа: {{scanningOrder.orderId}}
+        .city Город: 
+          span.city-name {{scanningOrder.deliveryInfo.deliveryPoint.shortName}}
+        .customer Покупатель: {{fullName}}
+      .status-image-wrapper
+        img(src="@/assets/images/success.svg")
 </template>
 
 <script lang="ts">
 import { Order } from "@/types/api/order";
 import { defineComponent, PropType } from "vue";
-import successImg from "@/assets/images/success.svg";
-import scanImg from "@/assets/images/scan.svg";
-import errorImg from "@/assets/images/error.svg";
 
 export default defineComponent({
   name: "current-scan",
@@ -47,40 +54,35 @@ export default defineComponent({
       default: null,
     },
   },
-  data() {
-    return {
-      successImg,
-      scanImg,
-      errorImg,
-    };
-  },
   computed: {
-    // если указать объект в темплейте pug-a, то слетает подсветка синтаксиса кода
-    cityNameClasses(): {
-      [K: string]: boolean;
-    } {
-      return { "city-name--error": this.scanningResult === false };
-    },
     fullName(): string {
       if (!this.scanningOrder) return "";
 
       return `${this.scanningOrder.customer.lastName} ${this.scanningOrder.customer.firstName[0]}.`;
-    },
-    statusImg(): string {
-      switch (this.scanningResult) {
-        case null:
-          return scanImg;
-        case true:
-          return successImg;
-        default:
-          return errorImg;
-      }
     },
   },
 });
 </script>
 
 <style scoped lang="stylus">
+.bounce-enter-active {
+  animation: bounce-in .2s;
+}
+.bounce-leave-active {
+  animation: bounce-in .2s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .current-scan
   background #FFFFFF
   border-radius 4px
@@ -91,28 +93,29 @@ export default defineComponent({
     display flex
     justify-content space-between
     margin-bottom 20px
-  .order-info
-    display flex
-    justify-content space-between
-    align-items center
+  .warn, .info, .error
     border 2px solid #C4C9D4
     border-radius 4px
     padding 24px
-    .warn
+    display flex
+    justify-content space-between
+    align-items center
+  .warn
+    .text
       max-width 150px
-    .info
-      .city-name--error
-        color #E94949
-    .warn, .info
-      font-size 12px
-      color #303236
-      opacity 0.8
-    .status-image-wrapper
-      width 62px
-      height 62px
-      display flex
-      justify-content center
-      align-items center
-      background #ECEFF4
-      border-radius 4px
+  .error
+    .city-name
+      color #E94949
+  .text
+    font-size 12px
+    color #303236
+    opacity 0.8
+  .status-image-wrapper
+    width 62px
+    height 62px
+    display flex
+    justify-content center
+    align-items center
+    background #ECEFF4
+    border-radius 4px
 </style>
