@@ -42,6 +42,7 @@ export default defineComponent({
   padding 42px 82px
   .progress
     margin-bottom 17px
+    width 106px
   .city
     margin-bottom 8px
     color #303236

@@ -1,8 +1,12 @@
 <template lang="pug">
-.progress
-  .substrate
-    .image-substrate
-      img(src="@/assets/images/ship.svg")
+svg.progress(viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg")
+  circle.ring(cx="55" cy="55" transform="rotate(-90 55 55)" r="53" stroke="url(#paint0_linear)" stroke-width="3" :stroke-dasharray="`${strokeFillLength}, 333`")
+  circle(cx="55" cy="55" r="46" fill="#ECEFF4")
+  path(d="M66.2206 62.8148C66.2206 62.8148 64.2446 62.8046 63.1314 62.8148C61.2949 62.8148 56.2274 62.3931 52.7097 59.8011C49.4503 57.4 45.7703 52.2229 44.9074 49.3783C44.2903 47.3394 39.0811 47.8309 39.0811 47.8309C39.0811 47.8309 39.1966 44.912 42.4674 44.6834C42.4674 42.8606 43.1474 41.5017 44.8149 41.224C46.0034 41.0263 47.4354 41.944 48.0263 42.5211C48.0583 40.8937 48.5211 39 51.0857 39C52.5726 39 53.8434 40.9074 54.2366 42.2434C54.6686 41.3166 55.7726 40.1429 57.0777 40.1429C58.2754 40.1429 59.4251 41.4114 59.4251 43.5097C62.8011 43.5097 62.7897 45.7246 62.8537 46.7531C60.0023 46.7017 56.3543 45.7737 57.232 52.1886C58.0789 58.3577 61.5211 59.6617 66.2206 61.6708V62.8148ZM39.0537 64.2434C39.0914 66.464 41.2263 68.336 42.9417 69.6446C42.9417 69.6446 43.4983 70.7531 44.9886 70.7531C46.4789 70.7531 47.3166 68.4983 48.584 68.4983C49.968 68.4983 50.5006 70.7531 52.5989 70.7531C54.696 70.7531 54.8926 68.4983 56.5531 68.4983C58.2126 68.4983 59.0343 70.7531 60.6309 70.7531C62.2297 70.7531 63.4823 68.4983 64.728 68.4983C66.5863 68.4983 66.5703 70.7531 68.1063 70.7531C69.5749 70.7531 70.7931 65.8423 70.7931 65.8423C70.7931 65.8423 70.3657 65.1508 70.0834 65.1508C68.6503 65.1508 60.1531 65.1508 56.5143 65.1508C52.16 65.1508 52.4686 65.4571 48.888 64.8C44.5966 64.0126 44.4914 62.2308 44.4914 59.1737C44.4914 56.1154 43.1566 55.2377 41.4194 54.9703C40.2434 54.7897 38.8869 55.4309 39.0103 56.632C39.1886 58.3577 42.648 56.8549 42.648 58.4137C42.6446 60.2274 38.9931 60.5211 39.0537 64.2434Z" fill="#303236")
+  defs
+    linearGradient#paint0_linear(x1="5.11765" y1="71.6274" x2="55" y2="2.00001" gradientUnits="userSpaceOnUse")
+      stop(stop-color="#F04040")
+      stop(offset="1" stop-color="#F04040" stop-opacity="0.58")
 </template>
 
 <script lang="ts">
@@ -22,29 +26,19 @@ export default defineComponent({
       default: 0,
     },
   },
+  computed: {
+    strokeFillLength(): number {
+      const strokeLength = 333;
+      // на ноль делить нельзя
+      const maxValue = this.maxValue || 1;
+
+      return (strokeLength / maxValue) * this.currentValue;
+    },
+  },
 });
 </script>
 
 <style scoped lang="stylus">
-.progress
-  width 106px
-  height 106px
-  border-radius 50%
-  background #E94949
-  padding 2px
-  .substrate
-    box-sizing: border-box;
-    border-radius 50%
-    background #FFFFFF
-    width 100%
-    height 100%
-    padding 7px
-  .image-substrate
-    width 100%
-    height 100%
-    border-radius 50%
-    background #ECEFF4
-    display flex
-    justify-content center
-    align-items center
+.ring
+  transition: stroke-dasharray 0.3s ease;
 </style>
