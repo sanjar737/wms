@@ -13,6 +13,6 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: asana-bot
-        uses: sanjar737/asana-bot@v0.0.1
+        uses: sanjar737/asana-bot@0.0.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
