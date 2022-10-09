@@ -1,11 +1,10 @@
-name: Update stand link
-
+name: Asana bot
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  replace-description:
+  asana-bot:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,6 +13,6 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: asana-bot
-        uses: sanjar737/asana-bot
+        uses: sanjar737/asana-bot@v0.0.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
